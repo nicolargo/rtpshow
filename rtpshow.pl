@@ -25,10 +25,10 @@
 #
 # TODO
 # - Gestion des erreurs (par exemple lors du décodage des paquets)
-# - afficher le rapport toutes les n secondes (n étant une option)
+# - Unite pour la gigue ?
 #
 my $program_name = "RTPshow";
-my $program_version =  "0.1";
+my $program_version =  "0.3";
 
 # Libraries
 use Getopt::Std;
@@ -219,13 +219,11 @@ sub rtp_packets {
         }
         
         # Display report
-        print "RTP report for the ssrc ", $ssrc, " flow (type ",$rtp->payload_type,")";
-        if (defined $rtp->source_ip()) {
-            print " from ", $rtp->source_ip(),":", $rtp->source_port(), "\n"; 
-        } else {
-            print "\n";
+        my $ssrckey;
+        foreach $ssrckey (sort keys %bitrate) {
+            print "RTP report for the ssrc ", $ssrckey, " flow\n";
+            printf " Bitrate Kbps (current / average / max): %.0f / %.0f / %.0f\n", $bitrate{"$ssrckey"}/1000, $bitrate_avg{"$ssrckey"}/1000, $bitrate_max{"$ssrckey"}/1000;
+            printf " Jitter ms (current / average / max): %.0f / %.0f / %.0f\n", $jitter{"$ssrckey"}, $jitter_avg{"$ssrckey"}, $jitter_max{"$ssrckey"};
         }
-        print " Jitter ms (current / average / max): ", $jitter{"$ssrc"}, " / ", $jitter_avg{"$ssrc"}, " / ", $jitter_max{"$ssrc"}, "\n";
-        print " Bitrate Kbps (current / average / max): ", $bitrate{"$ssrc"}/1000, " / ", $bitrate_avg{"$ssrc"}/1000, " / ", $bitrate_max{"$ssrc"}/1000, "\n";
     }
 }

@@ -25,10 +25,10 @@
 #
 # TODO
 # - Gestion des erreurs (par exemple lors du décodage des paquets)
-# - Unite pour la gigue ?
+# - Unite pour la gigue ? TBC
 #
 my $program_name = "RTPshow";
-my $program_version =  "0.3";
+my $program_version =  "0.4";
 
 # Libraries
 use Getopt::Std;
@@ -223,7 +223,7 @@ sub rtp_packets {
         foreach $ssrckey (sort keys %bitrate) {
             print "RTP report for the ssrc ", $ssrckey, " flow\n";
             printf " Bitrate Kbps (current / average / max): %.0f / %.0f / %.0f\n", $bitrate{"$ssrckey"}/1000, $bitrate_avg{"$ssrckey"}/1000, $bitrate_max{"$ssrckey"}/1000;
-            printf " Jitter ms (current / average / max): %.0f / %.0f / %.0f\n", $jitter{"$ssrckey"}, $jitter_avg{"$ssrckey"}, $jitter_max{"$ssrckey"};
+            printf " Jitter ms (current / average / max): %.0f / %.0f / %.0f\n", $jitter{"$ssrckey"}/1000, $jitter_avg{"$ssrckey"}/1000, $jitter_max{"$ssrckey"}/1000;
         }
     }
 }

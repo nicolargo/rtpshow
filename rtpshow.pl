@@ -28,7 +28,7 @@
 # - Unite pour la gigue ? TBC
 #
 my $program_name = "RTPshow";
-my $program_version =  "0.5";
+my $program_version =  "0.6";
 
 # Libraries
 use Getopt::Std;
@@ -167,7 +167,10 @@ sub rtp_packets {
     #   Strip rtp encapsulation
     my $rtp = new Net::RTP::Packet();
     $rtp->decode($udportcp->{'data'});
-    if (!%rtp) { print "Is not a RTP packet (skip)\n"); };   
+    if (!defined $rtp->version()) { 
+        print "Is not a RTP packet (skip)\n"; 
+        return;
+    }
     
     # Get the Ssrc
     my $ssrc = $rtp->ssrc();
